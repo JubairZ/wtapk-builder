@@ -1,20 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:async';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
-  runApp(const AppBuilder());
+  runApp(const OfflineBuilderApp());
 }
 
-class AppBuilder extends StatelessWidget {
-  const AppBuilder({super.key});
+class OfflineBuilderApp extends StatelessWidget {
+  const OfflineBuilderApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App Maker',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      title: 'Offline App Maker',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
+        useMaterial3: true,
+      ),
       home: const BuilderScreen(),
     );
   }
@@ -28,127 +33,147 @@ class BuilderScreen extends StatefulWidget {
 }
 
 class _BuilderScreenState extends State<BuilderScreen> {
-  final _urlCtrl = TextEditingController(text: 'https://');
-  final _nameCtrl = TextEditingController();
-  String _selectedTheme = 'ThemeTemplate.darkEspresso';
+  static const platform = MethodChannel('bd.bro.jubair/apk_builder');
+
+  final _nameCtrl = TextEditingController(text: "My Web App");
+  final _urlCtrl = TextEditingController(text: "https://jubair.bro.bd");
+  String _selectedTheme = "ThemeTemplate.darkEspresso";
+  String _selectedSplash = "SplashTemplate.classicCenter";
+
   bool _isBuilding = false;
   String _status = '';
-  Timer? _timer;
+  String? _builtApkPath;
 
   final List<String> _themes = [
-    'ThemeTemplate.darkEspresso',
-    'ThemeTemplate.oceanBlue',
-    'ThemeTemplate.forestGreen',
-    'ThemeTemplate.redWine',
+    'ThemeTemplate.darkEspresso', 'ThemeTemplate.lightCream', 
+    'ThemeTemplate.midnightCoffee', 'ThemeTemplate.redWine',
+    'ThemeTemplate.forestGreen', 'ThemeTemplate.oceanBlue',
+    'ThemeTemplate.sunsetOrange', 'ThemeTemplate.purpleMocha',
   ];
 
-  void _startBuild() async {
+  final List<String> _splashes = [
+    'SplashTemplate.classicCenter', 'SplashTemplate.photoFull',
+    'SplashTemplate.gradientWave', 'SplashTemplate.minimalText',
+    'SplashTemplate.iconLarge', 'SplashTemplate.neonGlow',
+  ];
+
+  Future<File> _copyAssetToFile(String assetPath, String fileName) async {
+    final byteData = await rootBundle.load(assetPath);
+    final dir = await getTemporaryDirectory();
+    final file = File('${dir.path}/$fileName');
+    await file.writeAsBytes(byteData.buffer.asUint8List(), flush: true);
+    return file;
+  }
+
+  Future<void> _buildApk() async {
     if (_nameCtrl.text.isEmpty || _urlCtrl.text.isEmpty) return;
-    
+
     setState(() {
       _isBuilding = true;
-      _status = 'Triggering build engine...';
+      _status = 'Extracting base resources...';
+      _builtApkPath = null;
     });
 
     try {
-      final res = await http.post(
-        Uri.parse('https://api.shillongteeroffice.com/build'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'appName': _nameCtrl.text,
-          'url': _urlCtrl.text,
-          'theme': _selectedTheme
-        })
-      );
+      // 1. Copy base APK and Keystore from assets to Temp Dir
+      final baseApk = await _copyAssetToFile('assets/base.apk', 'base.apk');
+      final keystore = await _copyAssetToFile('assets/signer.jks', 'signer.jks');
 
-      if (res.statusCode == 200) {
-        setState(() => _status = 'Build triggered! Compiling APK in cloud...');
-        _pollStatus();
-      } else {
-        setState(() {
-          _isBuilding = false;
-          _status = 'Error triggering build.';
-        });
-      }
+      // 2. Prepare Output Path
+      final outDir = await getApplicationDocumentsDirectory();
+      final outPath = '${outDir!.path}/${_nameCtrl.text.replaceAll(' ', '_')}.apk';
+
+      // 3. Prepare Config JSON
+      final configJson = jsonEncode({
+        'appName': _nameCtrl.text,
+        'websiteUrl': _urlCtrl.text,
+        'themeTemplate': _selectedTheme,
+        'splashTemplate': _selectedSplash
+      });
+
+      setState(() => _status = 'Patching & Cryptographically Signing APK...');
+
+      // 4. Call Native Kotlin Code
+      await platform.invokeMethod('buildApk', {
+        'baseApkPath': baseApk.path,
+        'outputPath': outPath,
+        'keystorePath': keystore.path,
+        'keyPassword': 'wtapk123',
+        'alias': 'wtapk',
+        'aliasPassword': 'wtapk123',
+        'jsonConfigData': configJson,
+      });
+
+      setState(() {
+        _status = 'Success! APK Ready.';
+        _builtApkPath = outPath;
+        _isBuilding = false;
+      });
+
     } catch (e) {
       setState(() {
+        _status = 'Build Failed: ${e.toString()}';
         _isBuilding = false;
-        _status = 'Connection error.';
       });
     }
-  }
-
-  void _pollStatus() {
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-      try {
-        final res = await http.get(Uri.parse('https://api.shillongteeroffice.com/status'));
-        if (res.statusCode == 200) {
-          final data = jsonDecode(res.body);
-          if (data['status'] == 'completed') {
-            timer.cancel();
-            setState(() {
-              _isBuilding = false;
-              _status = data['conclusion'] == 'success' 
-                  ? 'Build Success! Check GitHub Releases.' 
-                  : 'Build Failed. Check Logs.';
-            });
-          } else {
-            setState(() => _status = 'Compiling... (Status: ${data['status']})');
-          }
-        }
-      } catch (e) {
-        // ignore
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create App'), centerTitle: true),
-      body: Padding(
+      appBar: AppBar(title: const Text('Offline App Maker')),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Enter Website URL', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _urlCtrl,
-              decoration: const InputDecoration(border: OutlineInputBorder(), hintText: 'https://example.com'),
-            ),
-            const SizedBox(height: 20),
-            const Text('App Name', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _nameCtrl,
-              decoration: const InputDecoration(border: OutlineInputBorder(), hintText: 'My Awesome App'),
-            ),
-            const SizedBox(height: 20),
-            const Text('App Theme', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            // Inputs
+            const Text('App Name'),
+            TextField(controller: _nameCtrl, decoration: const InputDecoration(border: OutlineInputBorder())),
+            const SizedBox(height: 16),
+            const Text('Website URL'),
+            TextField(controller: _urlCtrl, decoration: const InputDecoration(border: OutlineInputBorder())),
+            const SizedBox(height: 16),
+            const Text('Theme Template'),
             DropdownButtonFormField<String>(
               value: _selectedTheme,
               decoration: const InputDecoration(border: OutlineInputBorder()),
               items: _themes.map((t) => DropdownMenuItem(value: t, child: Text(t.split('.').last))).toList(),
               onChanged: (v) => setState(() => _selectedTheme = v!),
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _isBuilding ? null : _startBuild,
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
-              child: _isBuilding 
-                  ? const CircularProgressIndicator(color: Colors.white) 
-                  : const Text('GENERATE NATIVE APK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            const Text('Splash Template'),
+            DropdownButtonFormField<String>(
+              value: _selectedSplash,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+              items: _splashes.map((t) => DropdownMenuItem(value: t, child: Text(t.split('.').last))).toList(),
+              onChanged: (v) => setState(() => _selectedSplash = v!),
             ),
+            const SizedBox(height: 32),
+
+            // Build Button
+            ElevatedButton(
+              onPressed: _isBuilding ? null : _buildApk,
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20)),
+              child: _isBuilding 
+                  ? const CircularProgressIndicator()
+                  : const Text('GENERATE OFFLINE APK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+            
             const SizedBox(height: 20),
-            Text(_status, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+            Text(_status, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)),
+
+            // Share Button
+            if (_builtApkPath != null) ...[
+              const SizedBox(height: 20),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Share.shareXFiles([XFile(_builtApkPath!)], text: 'Here is your new App!');
+                },
+                icon: const Icon(Icons.share),
+                label: const Text('Share APK'),
+              )
+            ]
           ],
         ),
       ),
