@@ -79,9 +79,12 @@ class _BuilderScreenState extends State<BuilderScreen> {
       final baseApk = await _copyAssetToFile('assets/base.apk', 'base.apk');
       final keystore = await _copyAssetToFile('assets/signer.jks', 'signer.jks');
 
-      // 2. Prepare Output Path
-      final outDir = await getApplicationDocumentsDirectory();
-      final outPath = '${outDir!.path}/${_nameCtrl.text.replaceAll(' ', '_')}.apk';
+      // 2. Prepare Output Path (Save directly to Downloads)
+      final outDir = Directory('/storage/emulated/0/Download');
+      if (!await outDir.exists()) {
+        await outDir.create(recursive: true);
+      }
+      final outPath = '${outDir.path}/${_nameCtrl.text.replaceAll(' ', '_')}.apk';
 
       // 3. Prepare Config JSON
       final configJson = jsonEncode({
@@ -105,7 +108,7 @@ class _BuilderScreenState extends State<BuilderScreen> {
       });
 
       setState(() {
-        _status = 'Success! APK Ready.';
+        _status = 'Success! Saved to Downloads folder.';
         _builtApkPath = outPath;
         _isBuilding = false;
       });
@@ -166,12 +169,18 @@ class _BuilderScreenState extends State<BuilderScreen> {
             // Share Button
             if (_builtApkPath != null) ...[
               const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(color: Colors.green.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                child: Text('File Saved:\n$_builtApkPath', textAlign: TextAlign.center, style: const TextStyle(color: Colors.green, fontSize: 12)),
+              ),
+              const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () {
                   Share.shareXFiles([XFile(_builtApkPath!)], text: 'Here is your new App!');
                 },
                 icon: const Icon(Icons.share),
-                label: const Text('Share APK'),
+                label: const Text('Share / Install APK'),
               )
             ]
           ],
