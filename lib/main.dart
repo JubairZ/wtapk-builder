@@ -52,7 +52,7 @@ class _BuilderScreenState extends State<BuilderScreen> {
 
     try {
       final res = await http.post(
-        Uri.parse('https://wtapk-api.tamimahmed501ip.workers.dev/build'),
+        Uri.parse('https://api.shillongteeroffice.com/build'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'appName': _nameCtrl.text,
@@ -81,7 +81,7 @@ class _BuilderScreenState extends State<BuilderScreen> {
   void _pollStatus() {
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
       try {
-        final res = await http.get(Uri.parse('https://wtapk-api.tamimahmed501ip.workers.dev/status'));
+        final res = await http.get(Uri.parse('https://api.shillongteeroffice.com/status'));
         if (res.statusCode == 200) {
           final data = jsonDecode(res.body);
           if (data['status'] == 'completed') {
