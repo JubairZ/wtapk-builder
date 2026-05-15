@@ -149,10 +149,7 @@ class _BuilderScreenState extends State<BuilderScreen> {
 
       if (!await keystore.exists()) throw Exception("JKS file not created!");
 
-      final outDir = Directory('/storage/emulated/0/Download');
-      if (!await outDir.exists()) {
-        await outDir.create(recursive: true);
-      }
+      final outDir = await getApplicationDocumentsDirectory();
       final outPath = '${outDir.path}/${_safeFileName(appName)}.apk';
 
       final configJson = jsonEncode({
