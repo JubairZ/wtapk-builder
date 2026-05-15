@@ -15,9 +15,9 @@ class OfflineBuilderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Offline App Maker',
+      title: 'Web to APK Maker',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC17D3C), brightness: Brightness.dark),
         useMaterial3: true,
       ),
       home: const BuilderScreen(),
@@ -58,11 +58,15 @@ class _BuilderScreenState extends State<BuilderScreen> {
   ];
 
   Future<File> _copyAssetToFile(String assetPath, String fileName) async {
-    final byteData = await rootBundle.load(assetPath);
-    final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/$fileName');
-    await file.writeAsBytes(byteData.buffer.asUint8List(), flush: true);
-    return file;
+    try {
+      final byteData = await rootBundle.load(assetPath);
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/$fileName');
+      await file.writeAsBytes(byteData.buffer.asUint8List(), flush: true);
+      return file;
+    } catch (e) {
+      throw Exception("Failed to load $assetPath: $e");
+    }
   }
 
   Future<void> _buildApk() async {
@@ -75,18 +79,17 @@ class _BuilderScreenState extends State<BuilderScreen> {
     });
 
     try {
-      // 1. Copy base APK and Keystore from assets to Temp Dir
       final baseApk = await _copyAssetToFile('assets/base.apk', 'base.apk');
       final keystore = await _copyAssetToFile('assets/signer.jks', 'signer.jks');
 
-      // 2. Prepare Output Path (Save directly to Downloads)
+      if (!await keystore.exists()) throw Exception("JKS file not created!");
+
       final outDir = Directory('/storage/emulated/0/Download');
       if (!await outDir.exists()) {
         await outDir.create(recursive: true);
       }
       final outPath = '${outDir.path}/${_nameCtrl.text.replaceAll(' ', '_')}.apk';
 
-      // 3. Prepare Config JSON
       final configJson = jsonEncode({
         'appName': _nameCtrl.text,
         'websiteUrl': _urlCtrl.text,
@@ -96,7 +99,6 @@ class _BuilderScreenState extends State<BuilderScreen> {
 
       setState(() => _status = 'Patching & Cryptographically Signing APK...');
 
-      // 4. Call Native Kotlin Code
       await platform.invokeMethod('buildApk', {
         'baseApkPath': baseApk.path,
         'outputPath': outPath,
@@ -124,13 +126,12 @@ class _BuilderScreenState extends State<BuilderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Offline App Maker')),
+      appBar: AppBar(title: const Text('Web to APK Maker'), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Inputs
             const Text('App Name'),
             TextField(controller: _nameCtrl, decoration: const InputDecoration(border: OutlineInputBorder())),
             const SizedBox(height: 16),
@@ -153,20 +154,19 @@ class _BuilderScreenState extends State<BuilderScreen> {
               onChanged: (v) => setState(() => _selectedSplash = v!),
             ),
             const SizedBox(height: 32),
-
-            // Build Button
             ElevatedButton(
               onPressed: _isBuilding ? null : _buildApk,
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20)),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(20),
+                backgroundColor: const Color(0xFFC17D3C),
+                foregroundColor: Colors.white,
+              ),
               child: _isBuilding 
-                  ? const CircularProgressIndicator()
-                  : const Text('GENERATE OFFLINE APK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text('GENERATE APK', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
-            
             const SizedBox(height: 20),
             Text(_status, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)),
-
-            // Share Button
             if (_builtApkPath != null) ...[
               const SizedBox(height: 20),
               Container(
