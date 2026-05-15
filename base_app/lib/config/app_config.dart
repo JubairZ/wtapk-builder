@@ -24,25 +24,25 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show a floating action button on the main screen
-  static const bool showFloatingButton = true;
+  static bool showFloatingButton = true;
 
   /// FAB type: 'whatsapp' | 'telegram' | 'phone' | 'email'
-  static const String floatingButtonType = 'telegram';
+  static String floatingButtonType = 'telegram';
 
   /// WhatsApp number with country code, no + (e.g. '8801712345678')
-  static const String whatsAppNumber = '';
+  static String whatsAppNumber = '';
 
   /// Pre-filled WhatsApp chat message
-  static const String whatsAppMessage = 'Hello! I need help.';
+  static String whatsAppMessage = 'Hello! I need help.';
 
   /// Phone number for 'phone' type (with country code)
-  static const String floatingButtonPhone = '';
+  static String floatingButtonPhone = '';
 
   /// Email address for 'email' type
-  static const String floatingButtonEmail = '';
+  static String floatingButtonEmail = '';
 
   /// Tooltip shown when user long-presses the FAB
-  static const String floatingButtonTooltip = 'Join @JubairSensei';
+  static String floatingButtonTooltip = 'Join @JubairSensei';
 
   // ══════════════════════════════════════════════════════════════
   //  12. CUSTOM JAVASCRIPT INJECTION
@@ -51,7 +51,7 @@ class AppConfig {
 
   /// JavaScript injected after every page load (empty = disabled)
   /// Example: "document.querySelectorAll('.ads').forEach(e => e.remove());"
-  static const String customJavaScript = '';
+  static String customJavaScript = '';
 
   // ══════════════════════════════════════════════════════════════
   //  1. APP INFO
@@ -61,10 +61,10 @@ class AppConfig {
   static String appName = 'Web to APK Maker';
 
   /// Package name (reverse domain format) — must match build.gradle
-  static const String packageName = 'bd.bro.jubair.wtapk';
+  static String packageName = 'bd.bro.jubair.wtapk';
 
   /// Current version (semantic versioning)
-  static const String appVersion = '1.0.0';
+  static String appVersion = '1.0.0';
 
   /// Version code — increment by 1 with every release
   static const int appVersionCode = 1;
@@ -84,7 +84,7 @@ class AppConfig {
   static ThemeTemplate themeTemplate = ThemeTemplate.darkEspresso;
 
   /// Set to true to override theme colors with your own custom colors below
-  static const bool useCustomColors = false;
+  static bool useCustomColors = false;
 
   // Custom colors (only used when useCustomColors = true)
   static const Color customPrimaryColor = Color(0xFFC17D3C);
@@ -110,14 +110,14 @@ class AppConfig {
   static SplashTemplate splashTemplate = SplashTemplate.classicCenter;
 
   /// Show logo/photo on splash screen
-  static const bool showSplashLogo = true;
+  static bool showSplashLogo = true;
 
   /// Path to splash logo image (put your image in assets/splash/)
   /// Leave empty to use default icon widget
-  static const String splashLogoAsset = 'assets/splash/logo.png';
+  static String splashLogoAsset = 'assets/splash/logo.png';
 
   /// Show logo as circle (true) or rectangle with rounded corners (false)
-  static const bool splashRoundedCircle = false;
+  static bool splashRoundedCircle = false;
 
   /// Logo corner radius (only when splashRoundedCircle = false)
   static const double splashLogoRadius = 24.0;
@@ -126,22 +126,22 @@ class AppConfig {
   static const double splashLogoSize = 120.0;
 
   /// Main title on splash screen
-  static const String splashTitle = 'Web to APK Maker';
+  static String splashTitle = 'Web to APK Maker';
 
   /// Subtitle / tagline on splash
-  static const String splashTagline = 'Turn any website into an Android app';
+  static String splashTagline = 'Turn any website into an Android app';
 
   /// How many seconds to show splash before loading app
   static const int splashDurationSeconds = 3;
 
   /// Show progress indicator on splash
-  static const bool showSplashProgress = true;
+  static bool showSplashProgress = true;
 
   /// Animated dots or circular (true = dots, false = circular)
-  static const bool splashAnimatedDots = true;
+  static bool splashAnimatedDots = true;
 
   /// Show "Powered by" credit on splash
-  static const bool showPoweredBy = true;
+  static bool showPoweredBy = true;
 
   // ══════════════════════════════════════════════════════════════
   //  4. TOOLBAR / APP BAR
@@ -149,7 +149,7 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show the toolbar at the top
-  static const bool showToolbar = true;
+  static bool showToolbar = true;
 
   /// Toolbar template (1–5):
   ///   standard | transparent | gradient | minimal | floating
@@ -159,75 +159,75 @@ class AppConfig {
   static String toolbarTitle = 'Web to APK Maker';
 
   /// Show title text in the toolbar (set false to hide it)
-  static const bool showToolbarTitle = true;
+  static bool showToolbarTitle = true;
 
   /// Show the back navigation button
-  static const bool showBackButton = true;
+  static bool showBackButton = true;
 
   /// Show the forward navigation button
-  static const bool showForwardButton = false;
+  static bool showForwardButton = false;
 
   /// Show refresh button
-  static const bool showRefreshButton = true;
+  static bool showRefreshButton = true;
 
   /// Show share button
-  static const bool showShareButton = true;
+  static bool showShareButton = true;
 
   /// Show home button (loads websiteUrl)
-  static const bool showHomeButton = false;
+  static bool showHomeButton = false;
 
   /// Show loading progress bar under toolbar
-  static const bool showProgressBar = true;
+  static bool showProgressBar = true;
 
   // ══════════════════════════════════════════════════════════════
   //  5. WEBVIEW SETTINGS
   // ══════════════════════════════════════════════════════════════
 
   /// Enable JavaScript (almost always true)
-  static const bool enableJavaScript = true;
+  static bool enableJavaScript = true;
 
   /// Allow pinch-to-zoom on pages
-  static const bool enableZoom = false;
+  static bool enableZoom = false;
 
   /// Pull down to refresh the page
-  static const bool enablePullToRefresh = true;
+  static bool enablePullToRefresh = true;
 
   /// Show loading indicator while page loads
-  static const bool showLoadingIndicator = true;
+  static bool showLoadingIndicator = true;
 
   /// Loading indicator template:
   ///   linearProgress | circularCenter | dotsPulse | skeleton | brandColorBar
   static const LoadingTemplate loadingTemplate = LoadingTemplate.linearProgress;
 
   /// Allow downloading files from the web
-  static const bool enableFileDownload = true;
+  static bool enableFileDownload = true;
 
   /// Allow uploading files (camera / gallery / file picker)
-  static const bool enableFileUpload = true;
+  static bool enableFileUpload = true;
 
   /// Open links to other domains in external browser
-  static const bool openExternalLinksInBrowser = true;
+  static bool openExternalLinksInBrowser = true;
 
   /// List of domains that should open inside the app (not in browser)
   static const List<String> internalDomains = [];
 
   /// Custom user agent string (leave empty for default)
-  static const String customUserAgent = '';
+  static String customUserAgent = '';
 
   /// Enable cookies
-  static const bool enableCookies = true;
+  static bool enableCookies = true;
 
   /// Clear cookies on each launch
-  static const bool clearCookiesOnLaunch = false;
+  static bool clearCookiesOnLaunch = false;
 
   /// Clear cache on each launch
-  static const bool clearCacheOnLaunch = false;
+  static bool clearCacheOnLaunch = false;
 
   /// Allow mixed content (http inside https)
-  static const bool allowMixedContent = true;
+  static bool allowMixedContent = true;
 
   /// Block ads by intercepting known ad domains
-  static const bool enableAdBlocking = false;
+  static bool enableAdBlocking = false;
 
   // ══════════════════════════════════════════════════════════════
   //  6. DIALOGS
@@ -235,10 +235,10 @@ class AppConfig {
 
   // ── 6A. App Update Dialog ──────────────────────────────────────
   /// Auto-check for updates from GitHub raw JSON
-  static const bool enableAutoUpdate = true;
+  static bool enableAutoUpdate = true;
 
   /// URL to version.json on raw.githubusercontent.com
-  static const String updateCheckUrl =
+  static String updateCheckUrl =
       'https://raw.githubusercontent.com/JubairZ/wtapk-up/main/version.json';
 
   /// Dialog template for update dialog (1–12)
@@ -246,68 +246,68 @@ class AppConfig {
       DialogTemplate.gradientHeader;
 
   /// Dialog title when update is available
-  static const String updateDialogTitle = '🚀 New Update Available!';
+  static String updateDialogTitle = '🚀 New Update Available!';
 
   /// Dialog message
-  static const String updateDialogMessage =
+  static String updateDialogMessage =
       'A new version is available with exciting improvements. Update now for the best experience!';
 
   /// Button label to update
-  static const String updateNowLabel = 'Update Now';
+  static String updateNowLabel = 'Update Now';
 
   /// Button label to skip (only shown when not force update)
-  static const String updateLaterLabel = 'Remind Me Later';
+  static String updateLaterLabel = 'Remind Me Later';
 
   // ── 6B. Telegram Dialog ────────────────────────────────────────
   /// Show Telegram join dialog on first launch
-  static const bool showTelegramDialog = true;
+  static bool showTelegramDialog = true;
 
   /// Telegram group/channel link
-  static const String telegramUrl = 'https://t.me/JubairSensei';
+  static String telegramUrl = 'https://t.me/JubairSensei';
 
   /// Dialog template for Telegram invite
   static const DialogTemplate telegramDialogTemplate =
       DialogTemplate.boldBanner;
 
   /// Dialog title
-  static const String telegramDialogTitle = '✈️ Join Jubair Sensei!';
+  static String telegramDialogTitle = '✈️ Join Jubair Sensei!';
 
   /// Dialog message
-  static const String telegramDialogMessage =
+  static String telegramDialogMessage =
       'Get the latest updates, tutorials & exclusive content. Join the community now!';
 
   /// Join button label
-  static const String telegramJoinLabel = '✈️  Join @JubairSensei';
+  static String telegramJoinLabel = '✈️  Join @JubairSensei';
 
   /// Skip button label
-  static const String telegramSkipLabel = 'Not Now';
+  static String telegramSkipLabel = 'Not Now';
 
   /// Show Telegram dialog again after X days (0 = show once)
   static const int telegramDialogCooldownDays = 3;
 
   // ── 6C. Announcement Dialog ────────────────────────────────────
   /// Show a custom announcement dialog when the app opens
-  static const bool showAnnouncementDialog = false;
+  static bool showAnnouncementDialog = false;
 
   /// Announcement dialog template (1–12)
   static const DialogTemplate announcementDialogTemplate =
       DialogTemplate.boldBanner;
 
   /// Announcement title
-  static const String announcementTitle = '🚀 Web to APK Maker';
+  static String announcementTitle = '🚀 Web to APK Maker';
 
   /// Announcement message
-  static const String announcementMessage =
+  static String announcementMessage =
       'Write your announcement here. This dialog can be turned on/off anytime.';
 
   /// Optional action button label (leave empty to hide button)
-  static const String announcementActionLabel = 'Learn More';
+  static String announcementActionLabel = 'Learn More';
 
   /// URL opened when action button is tapped
-  static const String announcementActionUrl = '';
+  static String announcementActionUrl = '';
 
   /// Show announcement only once (true) or every launch (false)
-  static const bool announcementShowOnce = true;
+  static bool announcementShowOnce = true;
 
   /// Show announcement after X seconds of loading
   static const int announcementDelaySeconds = 2;
@@ -317,7 +317,7 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Enable app expiry feature
-  static const bool enableExpiry = false;
+  static bool enableExpiry = false;
 
   /// Expiry date — app shows expiry dialog after this date
   /// Format: DateTime(year, month, day)
@@ -328,20 +328,20 @@ class AppConfig {
       DialogTemplate.fullScreenModal;
 
   /// Expiry dialog title
-  static const String expiryDialogTitle = '⏰ App Expired';
+  static String expiryDialogTitle = '⏰ App Expired';
 
   /// Expiry dialog message
-  static const String expiryDialogMessage =
+  static String expiryDialogMessage =
       'This app version has expired. Please contact the developer for the latest version.';
 
   /// Contact link shown on expiry dialog (Telegram, WhatsApp, website, etc.)
-  static const String expiryContactUrl = 'https://t.me/JubairSensei';
+  static String expiryContactUrl = 'https://t.me/JubairSensei';
 
   /// Contact button label
-  static const String expiryContactLabel = 'Contact Developer';
+  static String expiryContactLabel = 'Contact Developer';
 
   /// Block app completely on expiry (true = can't use app, false = just show warning)
-  static const bool expiryBlockApp = true;
+  static bool expiryBlockApp = true;
 
   // ══════════════════════════════════════════════════════════════
   //  8. NAVIGATION
@@ -349,20 +349,20 @@ class AppConfig {
 
   // ── 8A. Navigation Drawer ──────────────────────────────────────
   /// Show sidebar navigation drawer
-  static const bool showDrawer = true;
+  static bool showDrawer = true;
 
   /// Drawer template (1–5):
   ///   modernMinimal | colorHeader | avatarName | compactList | categorized
   static const DrawerTemplate drawerTemplate = DrawerTemplate.colorHeader;
 
   /// App name shown in drawer header
-  static const String drawerHeaderTitle = 'Web to APK Maker';
+  static String drawerHeaderTitle = 'Web to APK Maker';
 
   /// Subtitle shown in drawer header
-  static const String drawerHeaderSubtitle = 'by Jubair Sensei';
+  static String drawerHeaderSubtitle = 'by Jubair Sensei';
 
   /// Path to avatar/logo in drawer header (leave empty to use default icon)
-  static const String drawerHeaderLogo = '';
+  static String drawerHeaderLogo = '';
 
   /// Items in the navigation drawer
   static List<DrawerItem> drawerItems = [
@@ -391,7 +391,7 @@ class AppConfig {
 
   // ── 8B. Bottom Navigation Bar ──────────────────────────────────
   /// Show bottom navigation bar
-  static const bool showBottomNav = false;
+  static bool showBottomNav = false;
 
   /// Bottom nav template (1–5):
   ///   materialNav | floatingBar | iconOnly | labeledClassic | coloredActive
@@ -421,47 +421,47 @@ class AppConfig {
 
   // ── 8C. Exit Dialog ────────────────────────────────────────────
   /// Show a dialog when user presses back to exit
-  static const bool showExitDialog = true;
+  static bool showExitDialog = true;
 
   /// Exit dialog template (1–12)
   static const DialogTemplate exitDialogTemplate =
       DialogTemplate.materialRounded;
 
   /// Exit dialog title
-  static const String exitDialogTitle = 'Exit App?';
+  static String exitDialogTitle = 'Exit App?';
 
   /// Exit dialog message
-  static const String exitDialogMessage =
+  static String exitDialogMessage =
       'Are you sure you want to exit the app?';
 
   /// Yes button label
-  static const String exitYesLabel = 'Exit';
+  static String exitYesLabel = 'Exit';
 
   /// No button label
-  static const String exitNoLabel = 'Stay';
+  static String exitNoLabel = 'Stay';
 
   // ══════════════════════════════════════════════════════════════
   //  9. ADS (AdMob)
   // ══════════════════════════════════════════════════════════════
 
   /// Enable Google AdMob ads
-  static const bool enableAds = false;
+  static bool enableAds = false;
 
   /// AdMob App ID (from AdMob dashboard)
-  static const String admobAppId = 'ca-app-pub-xxxxxxxxxxxxxxxx~xxxxxxxxxx';
+  static String admobAppId = 'ca-app-pub-xxxxxxxxxxxxxxxx~xxxxxxxxxx';
 
   /// Banner ad unit ID
-  static const String bannerAdUnitId = 'ca-app-pub-xxxxxxxxxxxxxxxx/xxxxxxxxxx';
+  static String bannerAdUnitId = 'ca-app-pub-xxxxxxxxxxxxxxxx/xxxxxxxxxx';
 
   /// Interstitial ad unit ID
-  static const String interstitialAdUnitId =
+  static String interstitialAdUnitId =
       'ca-app-pub-xxxxxxxxxxxxxxxx/xxxxxxxxxx';
 
   /// Show banner ad at bottom
-  static const bool showBannerAd = false;
+  static bool showBannerAd = false;
 
   /// Show interstitial ad (full screen between page loads)
-  static const bool showInterstitialAd = false;
+  static bool showInterstitialAd = false;
 
   /// Show interstitial every X page loads
   static const int interstitialInterval = 5;
@@ -471,20 +471,20 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Ask user to rate app after X days of use
-  static const bool showRatingDialog = false;
+  static bool showRatingDialog = false;
 
   /// Show rating dialog after X app launches
   static const int ratingAfterLaunches = 5;
 
   /// Google Play Store URL for rating
-  static const String playStoreUrl =
+  static String playStoreUrl =
       'https://play.google.com/store/apps/details?id=YOUR_PACKAGE';
 
   /// Rating dialog title
-  static const String ratingDialogTitle = '⭐ Enjoying the App?';
+  static String ratingDialogTitle = '⭐ Enjoying the App?';
 
   /// Rating dialog message
-  static const String ratingDialogMessage =
+  static String ratingDialogMessage =
       'If you love using this app, please take a moment to rate us on the Play Store. It really helps!';
 
   // ══════════════════════════════════════════════════════════════
@@ -492,16 +492,16 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Enable camera access (for file upload)
-  static const bool enableCamera = true;
+  static bool enableCamera = true;
 
   /// Enable microphone access
-  static const bool enableMicrophone = false;
+  static bool enableMicrophone = false;
 
   /// Enable device location / GPS
-  static const bool enableGeolocation = false;
+  static bool enableGeolocation = false;
 
   /// Enable file storage access
-  static const bool enableStorage = true;
+  static bool enableStorage = true;
 
   // ══════════════════════════════════════════════════════════════
   //  10C. ERROR PAGE
@@ -512,14 +512,14 @@ class AppConfig {
   static const ErrorTemplate errorTemplate = ErrorTemplate.iconMessage;
 
   /// Error page title
-  static const String errorTitle = 'No Internet';
+  static String errorTitle = 'No Internet';
 
   /// Error page message
-  static const String errorMessage =
+  static String errorMessage =
       'Please check your connection and try again.';
 
   /// Retry button label
-  static const String errorRetryLabel = 'Try Again';
+  static String errorRetryLabel = 'Try Again';
   // ══════════════════════════════════════════════════════════════
   //  13. SECURITY
   //  Screenshot prevention + Biometric/PIN app lock
@@ -527,21 +527,21 @@ class AppConfig {
 
   /// Prevent screenshots and screen recordings (Android FLAG_SECURE)
   /// ⚠️ Users will see a black screen when trying to screenshot
-  static const bool preventScreenshots = false;
+  static bool preventScreenshots = false;
 
   // ── 13A. App Lock (Biometric / PIN) ────────────────────────────
   /// Require biometric authentication (fingerprint/face) to open app
-  static const bool enableAppLock = false;
+  static bool enableAppLock = false;
 
   /// Title shown on biometric authentication prompt
-  static const String appLockTitle = 'Unlock App';
+  static String appLockTitle = 'Unlock App';
 
   /// Subtitle shown on biometric authentication prompt
-  static const String appLockSubtitle =
+  static String appLockSubtitle =
       'Use fingerprint or face ID to continue';
 
   /// Cancel button label on biometric prompt
-  static const String appLockCancelLabel = 'Cancel';
+  static String appLockCancelLabel = 'Cancel';
 
   // ══════════════════════════════════════════════════════════════
   //  14. APPEARANCE — Dark / Light Mode
@@ -550,7 +550,7 @@ class AppConfig {
   /// Auto-switch theme based on Android system dark/light mode
   /// true  = use darkModeTheme / lightModeTheme below
   /// false = always use themeTemplate from Section 2
-  static const bool followSystemTheme = false;
+  static bool followSystemTheme = false;
 
   /// Theme used when system is in DARK mode (followSystemTheme must be true)
   static const ThemeTemplate darkModeTheme = ThemeTemplate.darkEspresso;
@@ -563,10 +563,10 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Enable swipe from left edge to go back in WebView history
-  static const bool enableSwipeBack = true;
+  static bool enableSwipeBack = true;
 
   /// Haptic vibration on navigation actions (back, forward, refresh)
-  static const bool enableHapticFeedback = false;
+  static bool enableHapticFeedback = false;
 
   // ══════════════════════════════════════════════════════════════
   //  16. CUSTOM CSS INJECTION
@@ -574,7 +574,7 @@ class AppConfig {
 
   /// CSS injected into every page via <style> tag (empty = disabled)
   /// Example: "body { font-size: 16px !important; } .ads { display: none; }"
-  static const String customCSS = '';
+  static String customCSS = '';
 
   // ══════════════════════════════════════════════════════════════
   //  17. COOKIE INJECTION
@@ -582,10 +582,10 @@ class AppConfig {
 
   /// Custom cookies to inject on every page load (empty = disabled)
   /// Format: 'key1=value1; key2=value2'
-  static const String customCookies = '';
+  static String customCookies = '';
 
   /// Cookie domain for injection (e.g. '.your-website.com' with leading dot)
-  static const String cookieDomain = '';
+  static String cookieDomain = '';
 
   // ══════════════════════════════════════════════════════════════
   // ══════════════════════════════════════════════════════════════
@@ -596,79 +596,79 @@ class AppConfig {
   // ── 18A. Permission Screen UI ─────────────────────────────────────────────
   /// Show a full startup screen listing all permissions before requesting
   /// If false, permissions are requested silently in the background
-  static const bool showPermissionScreen = true;
+  static bool showPermissionScreen = true;
 
   /// Title shown on the startup permission screen
-  static const String permissionScreenTitle = 'App Permissions';
+  static String permissionScreenTitle = 'App Permissions';
 
   /// Subtitle/description on the startup permission screen
-  static const String permissionScreenSubtitle =
+  static String permissionScreenSubtitle =
       'This app needs the following permissions to work properly. '
       'You can change these anytime in your phone settings.';
 
   /// Button label — allow all permissions
-  static const String permissionAllowAllLabel = 'Allow All & Continue';
+  static String permissionAllowAllLabel = 'Allow All & Continue';
 
   /// Text link — skip all permissions
-  static const String permissionSkipAllLabel = 'Skip for now';
+  static String permissionSkipAllLabel = 'Skip for now';
 
   /// Label for skip button in individual permission dialog
-  static const String permissionSkipLabel = 'Not Now';
+  static String permissionSkipLabel = 'Not Now';
 
   /// Dialog title shown when permission is denied permanently
-  static const String permissionDeniedDialogTitle = 'Permission Required';
+  static String permissionDeniedDialogTitle = 'Permission Required';
 
   /// Message shown when permission is permanently denied
-  static const String permissionDeniedMessage =
+  static String permissionDeniedMessage =
       'This feature needs the permission. Please enable it in your phone Settings.';
 
   /// Label for "Open Settings" button on denied dialog
-  static const String permissionOpenSettingsLabel = 'Open Settings';
+  static String permissionOpenSettingsLabel = 'Open Settings';
 
   // ── 18B. Which Permissions to Request ───────────────────────────────────
 
   // 🔔 Notifications (required on Android 13+ / API 33+)
-  static const bool requestNotificationPermission = true;
-  static const String notificationPermissionRationale =
+  static bool requestNotificationPermission = true;
+  static String notificationPermissionRationale =
       'Get important updates, alerts and news directly on your device.';
 
   // 📷 Camera (for file upload / QR scan inside WebView)
-  static const bool requestCameraPermission = true;
-  static const String cameraPermissionRationale =
+  static bool requestCameraPermission = true;
+  static String cameraPermissionRationale =
       'Required to take photos, scan QR codes, and use camera-based features.';
 
   // 🎤 Microphone (for voice features, audio recording)
-  static const bool requestMicrophonePermission = false;
-  static const String microphonePermissionRationale =
+  static bool requestMicrophonePermission = false;
+  static String microphonePermissionRationale =
       'Required for voice input, audio recording and video calls.';
 
   // 💾 Storage (read/write files, downloads)
-  static const bool requestStoragePermission = true;
-  static const String storagePermissionRationale =
+  static bool requestStoragePermission = true;
+  static String storagePermissionRationale =
       'Required to save downloaded files and access media on your device.';
 
   // 📍 Location (GPS / geolocation features)
-  static const bool requestLocationPermission = false;
-  static const String locationPermissionRationale =
+  static bool requestLocationPermission = false;
+  static String locationPermissionRationale =
       'Required to show location-based content, maps and nearby features.';
 
   // 🔵 Bluetooth (for Bluetooth-based features)
-  static const bool requestBluetoothPermission = false;
-  static const String bluetoothPermissionRationale =
+  static bool requestBluetoothPermission = false;
+  static String bluetoothPermissionRationale =
       'Required to connect and communicate with nearby Bluetooth devices.';
 
   // 📞 Phone State (read phone number, network info)
-  static const bool requestPhoneStatePermission = false;
-  static const String phonePermissionRationale =
+  static bool requestPhoneStatePermission = false;
+  static String phonePermissionRationale =
       'Required to access phone state and network information.';
 
   //  10D. CREDITS (Do not remove — required by license)
   // ══════════════════════════════════════════════════════════════
-  static const String _developerName = 'Jubair Sensei';
-  static const String _githubUrl = 'https://github.com/JubairZ';
-  static const String _youtubeUrl = 'https://youtube.com/@jubairsensei';
-  static const String _developerTelegramUrl = 'https://t.me/JubairSensei';
-  static const String _poweredByText =
+  static String _developerName = 'Jubair Sensei';
+  static String _githubUrl = 'https://github.com/JubairZ';
+  static String _youtubeUrl = 'https://youtube.com/@jubairsensei';
+  static String _developerTelegramUrl = 'https://t.me/JubairSensei';
+  static String _poweredByText =
       'Powered by Jubair Sensei | jubair.bro.bd';
 
   // Getters (read-only)
@@ -683,7 +683,7 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Enable swipe left/right gesture to go back/forward in history
-  static const bool enableSwipeNavigation = true;
+  static bool enableSwipeNavigation = true;
 
   /// Minimum horizontal swipe distance to trigger navigation (pixels)
   static const double swipeThreshold = 80.0;
@@ -694,10 +694,10 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show animated red banner at top when internet connection is lost
-  static const bool showOfflineBanner = true;
+  static bool showOfflineBanner = true;
 
   /// Message shown in the offline banner
-  static const String offlineBannerMessage = '📡 No internet connection';
+  static String offlineBannerMessage = '📡 No internet connection';
 
   // ══════════════════════════════════════════════════════════════
   //  15. TEXT SIZE CONTROL
@@ -705,7 +705,7 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show text size control buttons (A+ / A-) in toolbar overflow menu
-  static const bool showTextSizeControls = false;
+  static bool showTextSizeControls = false;
 
   /// Default text scale factor (1.0 = 100%)
   static const double defaultTextScale = 1.0;
@@ -725,23 +725,23 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show QR share button in toolbar overflow menu
-  static const bool showQrShareButton = true;
+  static bool showQrShareButton = true;
 
   // ══════════════════════════════════════════════════════════════
   //  17. SECURITY & PRIVACY
   // ══════════════════════════════════════════════════════════════
 
   /// Prevent screenshots and screen recording (FLAG_SECURE on Android)
-  static const bool enableScreenshotPrevention = false;
+  static bool enableScreenshotPrevention = false;
 
   /// Show "Copy URL" button in toolbar overflow menu
-  static const bool showCopyUrlButton = true;
+  static bool showCopyUrlButton = true;
 
   /// Show "Print" option in toolbar overflow menu
-  static const bool showPrintButton = false;
+  static bool showPrintButton = false;
 
   /// Show "Clear Cache" option in toolbar overflow menu
-  static const bool showClearCacheButton = true;
+  static bool showClearCacheButton = true;
 
   // ══════════════════════════════════════════════════════════════
   //  18. IN-APP SETTINGS SCREEN
@@ -749,7 +749,7 @@ class AppConfig {
   // ══════════════════════════════════════════════════════════════
 
   /// Show Settings option in toolbar overflow menu
-  static const bool showSettingsButton = true;
+  static bool showSettingsButton = true;
 
   // ══════════════════════════════════════════════════════════════
   //  19. LOCAL ANALYTICS
@@ -758,5 +758,5 @@ class AppConfig {
 
   /// Enable on-device analytics (page visit counts, session time)
   /// Data is stored locally in SharedPreferences — never sent anywhere
-  static const bool enableLocalAnalytics = true;
+  static bool enableLocalAnalytics = true;
 }

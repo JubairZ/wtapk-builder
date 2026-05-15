@@ -35,6 +35,13 @@ void main() async {
         orElse: () => AppConfig.splashTemplate
       );
     }
+    
+    // Dynamic feature flags
+    if (config['showFloatingButton'] != null) AppConfig.showFloatingButton = config['showFloatingButton'];
+    if (config['enableAds'] != null) AppConfig.enableAds = config['enableAds'];
+    if (config['showOfflineBanner'] != null) AppConfig.showOfflineBanner = config['showOfflineBanner'];
+    if (config['enableSwipeNavigation'] != null) AppConfig.enableSwipeNavigation = config['enableSwipeNavigation'];
+    if (config['showExitDialog'] != null) AppConfig.showExitDialog = config['showExitDialog'];
   } catch (e) {
     debugPrint("Could not load config.json, using defaults.");
   }

@@ -51,6 +51,12 @@ class _BuilderScreenState extends State<BuilderScreen> {
   String _selectedTheme = "ThemeTemplate.darkEspresso";
   String _selectedSplash = "SplashTemplate.classicCenter";
 
+  bool _showFloatingButton = true;
+  bool _enableAds = false;
+  bool _showOfflineBanner = true;
+  bool _enableSwipeNavigation = true;
+  bool _showExitDialog = true;
+
   bool _isBuilding = false;
   String _status = '';
   String? _builtApkPath;
@@ -154,6 +160,11 @@ class _BuilderScreenState extends State<BuilderScreen> {
         'websiteUrl': websiteUrl,
         'themeTemplate': _selectedTheme,
         'splashTemplate': _selectedSplash,
+        'showFloatingButton': _showFloatingButton,
+        'enableAds': _enableAds,
+        'showOfflineBanner': _showOfflineBanner,
+        'enableSwipeNavigation': _enableSwipeNavigation,
+        'showExitDialog': _showExitDialog,
       });
 
       setState(() => _status = 'Patching config and signing APK...');
@@ -275,6 +286,33 @@ class _BuilderScreenState extends State<BuilderScreen> {
                     )
                     .toList(),
                 onChanged: (v) => setState(() => _selectedSplash = v!),
+              ),
+              const SizedBox(height: 16),
+              _sectionTitle('App Features'),
+              SwitchListTile(
+                title: const Text('Floating Action Button'),
+                value: _showFloatingButton,
+                onChanged: (v) => setState(() => _showFloatingButton = v),
+              ),
+              SwitchListTile(
+                title: const Text('Enable Ads (AdMob)'),
+                value: _enableAds,
+                onChanged: (v) => setState(() => _enableAds = v),
+              ),
+              SwitchListTile(
+                title: const Text('Show Offline Banner'),
+                value: _showOfflineBanner,
+                onChanged: (v) => setState(() => _showOfflineBanner = v),
+              ),
+              SwitchListTile(
+                title: const Text('Swipe to Go Back'),
+                value: _enableSwipeNavigation,
+                onChanged: (v) => setState(() => _enableSwipeNavigation = v),
+              ),
+              SwitchListTile(
+                title: const Text('Confirm Exit Dialog'),
+                value: _showExitDialog,
+                onChanged: (v) => setState(() => _showExitDialog = v),
               ),
               const SizedBox(height: 18),
               _featureGrid(),
