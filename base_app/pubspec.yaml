@@ -1,0 +1,64 @@
+name: web_to_apk_maker
+description: "Web to APK Maker - Fully customizable WebView app builder. Powered by Jubair Sensei."
+publish_to: 'none'
+version: 1.2.0+4
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # WebView
+  webview_flutter: ^4.4.2
+  webview_flutter_android: ^3.12.1
+
+  # Network
+  http: ^1.1.0
+  connectivity_plus: ^5.0.2
+
+  # Storage
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.1
+
+  # App Info
+  package_info_plus: ^5.0.1
+
+  # URL / Share
+  url_launcher: ^6.2.2
+  share_plus: ^7.2.1
+
+  # Downloads
+  flutter_downloader: ^1.11.6
+  permission_handler: ^11.1.0
+  local_auth: ^2.3.0
+
+  # UI
+  cupertino_icons: ^1.0.6
+  lottie: ^3.0.0
+  shimmer: ^3.0.0
+  flutter_rating_bar: ^4.0.1
+
+  # QR Code
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/
+    - assets/splash/
+    - assets/images/
+    - assets/config.json

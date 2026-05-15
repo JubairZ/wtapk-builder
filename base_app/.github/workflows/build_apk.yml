@@ -1,0 +1,114 @@
+name: "Build & Release APK"
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: 'App Name'
+        required: true
+        default: 'Web to APK'
+      website_url:
+        description: 'Website URL'
+        required: true
+        default: 'https://jubair.bro.bd'
+      theme_template:
+        description: 'Theme Template'
+        required: false
+        default: 'ThemeTemplate.darkEspresso'
+      splash_template:
+        description: 'Splash Template'
+        required: false
+        default: 'SplashTemplate.classicCenter'
+
+env:
+  FLUTTER_VERSION: '3.22.0'
+  JAVA_VERSION: '17'
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_release:
+    name: "Build App"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Set up Java"
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: "Set up Flutter"
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: "Decode keystore"
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > android/app/release.keystore
+            printf "storeFile=release.keystore\nstorePassword=$KEYSTORE_PASSWORD\nkeyAlias=$KEY_ALIAS\nkeyPassword=$KEY_PASSWORD\n" > android/key.properties
+          fi
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: "Apply build inputs"
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from xml.sax.saxutils import escape
+
+          app_name = os.environ.get('APP_NAME') or 'Web to APK Maker'
+          website_url = os.environ.get('WEBSITE_URL') or 'https://jubair.bro.bd'
+          theme_template = os.environ.get('THEME_TEMPLATE') or 'ThemeTemplate.darkEspresso'
+          splash_template = os.environ.get('SPLASH_TEMPLATE') or 'SplashTemplate.classicCenter'
+
+          if not website_url.startswith(('http://', 'https://')):
+              website_url = 'https://' + website_url
+
+          Path('assets/config.json').write_text(json.dumps({
+              'appName': app_name,
+              'websiteUrl': website_url,
+              'themeTemplate': theme_template,
+              'splashTemplate': splash_template,
+          }, indent=2) + '\n', encoding='utf-8')
+
+          manifest = Path('android/app/src/main/AndroidManifest.xml')
+          text = manifest.read_text(encoding='utf-8')
+          text = text.replace('android:label="Web to APK"', f'android:label="{escape(app_name)}"')
+          manifest.write_text(text, encoding='utf-8')
+          PY
+        env:
+          APP_NAME: ${{ github.event.inputs.app_name || 'Web to APK Maker' }}
+          WEBSITE_URL: ${{ github.event.inputs.website_url || 'https://jubair.bro.bd' }}
+          THEME_TEMPLATE: ${{ github.event.inputs.theme_template || 'ThemeTemplate.darkEspresso' }}
+          SPLASH_TEMPLATE: ${{ github.event.inputs.splash_template || 'SplashTemplate.classicCenter' }}
+
+      - name: "Build APK"
+        run: |
+          flutter pub get
+          dart run flutter_launcher_icons
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk /tmp/base.apk
+
+      - name: "Push APK to Branch"
+        run: |
+          git config user.name "Jubair Sensei Bot"
+          git config user.email "actions@github.com"
+          git checkout --orphan apk-output
+          git rm -rf .
+          cp /tmp/base.apk ./base.apk
+          git add base.apk
+          git commit -m "chore: new base apk"
+          git push origin apk-output --force

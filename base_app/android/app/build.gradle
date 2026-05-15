@@ -1,0 +1,93 @@
+plugins {
+      id "com.android.application"
+      id "kotlin-android"
+      id "dev.flutter.flutter-gradle-plugin"
+  }
+
+  def localProperties = new Properties()
+  def localPropertiesFile = rootProject.file('local.properties')
+  if (localPropertiesFile.exists()) {
+      localPropertiesFile.withReader('UTF-8') { reader ->
+          localProperties.load(reader)
+      }
+  }
+
+  def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+  if (flutterVersionCode == null) {
+      flutterVersionCode = '1'
+  }
+
+  def flutterVersionName = localProperties.getProperty('flutter.versionName')
+  if (flutterVersionName == null) {
+      flutterVersionName = '1.0.0'
+  }
+
+  // Keystore signing config (set via environment variables in GitHub Actions)
+  def keystoreProperties = new Properties()
+  def keystorePropertiesFile = rootProject.file('key.properties')
+  def hasKeystore = keystorePropertiesFile.exists()
+  if (hasKeystore) {
+      keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+  }
+
+  android {
+      namespace "com.jubairsensei.webtoapk"
+      compileSdk flutter.compileSdkVersion
+      ndkVersion flutter.ndkVersion
+
+      compileOptions {
+          sourceCompatibility JavaVersion.VERSION_1_8
+          targetCompatibility JavaVersion.VERSION_1_8
+      }
+
+      kotlinOptions {
+          jvmTarget = '1.8'
+      }
+
+      sourceSets {
+          main.java.srcDirs += 'src/main/kotlin'
+      }
+
+      defaultConfig {
+          applicationId "com.jubairsensei.webtoapk"
+          minSdk 21
+          targetSdk flutter.targetSdkVersion
+          versionCode flutterVersionCode.toInteger()
+          versionName flutterVersionName
+          multiDexEnabled true
+      }
+
+      signingConfigs {
+          release {
+              if (hasKeystore) {
+                  keyAlias keystoreProperties['keyAlias']
+                  keyPassword keystoreProperties['keyPassword']
+                  storeFile file(keystoreProperties['storeFile'])
+                  storePassword keystoreProperties['storePassword']
+              }
+          }
+      }
+
+      buildTypes {
+          release {
+              // Fall back to debug signing when no keystore is configured
+              signingConfig hasKeystore ? signingConfigs.release : signingConfigs.debug
+              minifyEnabled false
+              shrinkResources false
+              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+          }
+          debug {
+              applicationIdSuffix ".debug"
+              versionNameSuffix "-debug"
+          }
+      }
+  }
+
+  flutter {
+      source '../..'
+  }
+
+  dependencies {
+      implementation "androidx.multidex:multidex:2.0.1"
+  }
+  
